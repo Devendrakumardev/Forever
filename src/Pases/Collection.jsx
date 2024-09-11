@@ -10,8 +10,8 @@ const Collection = () => {
   const [fillterProducts, setFillterProducts] = useState([]);
   const [categoty, setCategory] = useState([]);
   const [subCategory, setSubCategory] = useState([]);
-
-  // { toggle function}
+const [render , setRender]=useState(false)
+  console.log(categoty, "categoty")
 
   const toggleCategory = (e) => {
     if (categoty.includes(e.target.value)) {
@@ -19,6 +19,7 @@ const Collection = () => {
     } else {
       setCategory((prev) => [...prev, e.target.value]);
     }
+    setRender(!render)
   };
 
   // another function
@@ -32,13 +33,18 @@ const Collection = () => {
   };
 
   const applyFilter = () => {
-    let productsCopy = products.slice();
+    let productsCopy
+    console.log(categoty)
     if (categoty.length > 0) {
-      productsCopy = productsCopy.filter((item) =>
-        categoty.includes(item.categoty)
-      );
+      productsCopy = fillterProducts.filter((item) => {
+        if(categoty.includes(item.category)){
+          return true
+        }
+      }     
+      )
+      console.log()
+      setFillterProducts(productsCopy)
     }
-    setFillterProducts(productsCopy);
   };
 
   useEffect(() => {
@@ -47,8 +53,8 @@ const Collection = () => {
 
   useEffect(() => {
     applyFilter();
-  }, [categoty, subCategory]);
-
+  }, [render]);
+  console.log(fillterProducts.length, "fillterProducts")
   return (
     <div className="flex flex-col sm:flex-row gap-1 sm:gap-10 pt-10 border-1">
       {/* Fillter option */}
@@ -63,9 +69,8 @@ const Collection = () => {
         </p>
         {/* Category fillter */}
         <div
-          className={`border border-gray-300 pl-5 py-3 mt-6  ${
-            showFilter ? "" : "hidden"
-          } sm:block `}
+          className={`border border-gray-300 pl-5 py-3 mt-6  ${showFilter ? "" : "hidden"
+            } sm:block `}
         >
           <p className="mb-3 text-sm font-medium ">CATEGORY</p>
           <div className="flex flex-col gap-2 text-sm font-light text-gray-700">
@@ -73,9 +78,9 @@ const Collection = () => {
               <input
                 type="checkbox"
                 className="w-3"
-                value={"MEN"}
+                value={"Men"}
                 onChange={toggleCategory}
-                // onChange={toggleSubCategory}
+              // onChange={toggleSubCategory}
               />{" "}
               MEN
             </p>
@@ -103,9 +108,8 @@ const Collection = () => {
 
         {/* SubCategary */}
         <div
-          className={`border border-gray-300 pl-5 py-3 my-5 ${
-            showFilter ? "" : "hidden"
-          } sm:block `}
+          className={`border border-gray-300 pl-5 py-3 my-5 ${showFilter ? "" : "hidden"
+            } sm:block `}
         >
           <p className="mb-3 text-sm font-medium ">TYPE</p>
           <div className="flex flex-col gap-2 text-sm font-light text-gray-700">
@@ -114,7 +118,7 @@ const Collection = () => {
                 type="checkbox"
                 className="w-3"
                 value={"Topwear"}
-                // onChange={toggleSubCategory}
+              // onChange={toggleSubCategory}
               />
               Topwear{" "}
             </p>
@@ -124,7 +128,7 @@ const Collection = () => {
                 className="w-3"
                 type="checkbox"
                 value={"Bottomwear"}
-                // onChange={toggleSubCategory}
+              // onChange={toggleSubCategory}
               />
               Bottomwea{" "}
             </p>
@@ -134,7 +138,7 @@ const Collection = () => {
                 type="checkbox"
                 className="w-3"
                 value={"Winterwear"}
-                // onChange={toggleSubCategory}
+              // onChange={toggleSubCategory}
               />
               Winder
             </p>
